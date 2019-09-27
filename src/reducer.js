@@ -1,4 +1,6 @@
-const reducer = (state = 5, action) => {
+import {combineReducers} from 'redux';
+
+const counter = (state = 5, action) => {
     switch (action.type) {
         case 'INC':
             return state + 1;
@@ -11,4 +13,16 @@ const reducer = (state = 5, action) => {
     }
 }
 
-export default reducer;
+const todo = (state = ['Task 1'], action) => {
+    switch (action.type) {
+        case 'ADD_TODO':
+            return state.concat([action.text]);
+        default:
+            return state;
+    }
+}
+
+export default combineReducers({
+    counter,
+    todo
+});
