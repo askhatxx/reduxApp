@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import './todo.css';
 
 class Todo extends Component {
     constructor(props) {
@@ -17,24 +18,42 @@ class Todo extends Component {
         });
     }
 
-    onChange = (e) => {
+    handleChange = (e) => {
         this.setState({
             text: e.target.value
         })
     }
 
+    handleTaskClick = (i) => {
+        this.props.dispatch({type: 'SOLVED_TODO', index: i});
+    }
+
     render() {
-        const li = this.props.arr.map((item, i) => <li key={i}>{item}</li>);
+        const li = this.props.arr.map((item, i) => {
+            let classNames = 'task';
+            if (item.solved) {
+                classNames += ' solved';
+            }
+            return (
+                <li 
+                    key={i} 
+                    onClick={() => this.handleTaskClick(i)}
+                    className={classNames}>
+                        {item.text}
+                </li>
+            );
+        });
         return (
-            <div>
-                <ul>
+            <div className='todo'>
+                <ul className='list-unstyled'>
                     {li}
                 </ul>
                 <input 
                     value={this.state.text}
-                    onChange={this.onChange}
-                />
-                <button onClick={this.add}>add</button>
+                    onChange={this.handleChange}
+                    placeholder='Enter a new task'
+                    className='form-control'/>
+                <button className='btn btn-primary btn-block mt-2' onClick={this.add}>Add</button>
             </div>
         );
     }

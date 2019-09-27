@@ -13,10 +13,19 @@ const counter = (state = 5, action) => {
     }
 }
 
-const todo = (state = ['Task 1'], action) => {
+const initTodoState = [
+    {text: 'Task 1', solved: false},
+    {text: 'Task 2', solved: true}
+];
+
+const todo = (state = initTodoState, action) => {
     switch (action.type) {
         case 'ADD_TODO':
-            return state.concat([action.text]);
+            return state.concat([{text: action.text, solved: false}]);
+        case 'SOLVED_TODO':
+            const newState = state.slice();
+            newState[action.index]['solved'] = !newState[action.index]['solved'];
+            return newState;
         default:
             return state;
     }
